@@ -34,4 +34,32 @@ exports.add_user = async function (req, res, next) {
             error: error.message
         })
     }
-}
+} 
+exports.check_user= async function(req, res, next) {
+    try {
+        if(!req.body.email || !req.body.password)
+        {
+            throw new Error("Please enter Valid Email And Password")
+        }
+        
+        const checkuser=await USER.findOne({email:req.body.email})
+        if(!checkuser)
+        {
+            throw new Error("Your are not Enter Valid Email")    
+        }
+        const checkpwd=bcrypt.compareSync(req.body.password,checkuser.password)
+        if(!checkpwd)
+        {
+            throw new Error("Please Enter Valid Pwd")
+        }
+        const token=jwt.sign({user:checkuser._id},"RICK")
+        res.status(200).json({
+            status:"Login Succesfully",
+            data:checkuser,token
+        })
+    } catch (error) {
+     res.status(404).json({
+        error:error.message
+     })
+    }
+   }

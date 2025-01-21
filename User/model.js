@@ -17,8 +17,8 @@ const User_Model = new Schema({
   },
   email:{
     type:String,
-    unique:true,
-    trim:true
+    unique:true
+    
   },
   password:{
     type:String
