@@ -1,7 +1,8 @@
 var express = require('express');
-var router = express.Router();
+var taskrouter = express.Router();
 const controller=require('./controller')
 /* GET home page. */
-router.get('/', controller.All_user);
+taskrouter.get('/tasks', controller.all_task);
+taskrouter.post('/tasks/add', controller.add_task);
 
-module.exports = router;
+module.exports = taskrouter;

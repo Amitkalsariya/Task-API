@@ -1,29 +1,33 @@
-const TASK=require('./model')
-exports.all_user= async function(req, res, next) {
+const TASK = require('./model')
+exports.all_task = async function (req, res, next) {
     try {
-        const alluser=await TASK.find()
+        const alltasks = await TASK.find().populate("user")
         res.status(200).json({
-            data:alluser,
-            status:"Data Fetched Succesfully"
+            status: "Data Fetched Succesfully",
+            data: alltasks
         })
     } catch (error) {
-     res.status(404).json({
-        error:error.message
-     })
+        res.status(404).json({
+            status: "Error Raised",
+            error: error.message
+        })
     }
-   }
+}
 
-   exports.add_user= async function(req, res, next) {
+exports.add_task = async function (req, res, next) {
     try {
-        const adduser=await TASK.create(req.body)
-        res.status(200).json({
-            data:adduser,
-            status:"Data Fetched Succesfully"
+        if (!req.body.title || !req.body.desc || !req.body.start_date || !req.body.start_date || !req.body.user) {
+            throw new Error("Please Add all The Feilds")
+        }
+        const addition = await TASK.create(req.body)
+        res.status(201).json({
+            data: addition,
+            status: "Data Fetched Succesfully"
         })
     } catch (error) {
-     res.status(404).json({
-        error:error.message
-     })
+        res.status(404).json({
+            status: "Error Raised",
+            error: error.message
+        })
     }
-   }
-  
+}
